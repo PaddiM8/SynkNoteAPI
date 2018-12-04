@@ -1,0 +1,4 @@
+﻿databaseConnection=mongodb://localhost:27017
+tokenLength=32
+environment=prod,
+hashIterations=20000
