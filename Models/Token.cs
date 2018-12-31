@@ -49,7 +49,7 @@ namespace SynkNote.Models
             if (isRaw)
                 return new DateTime(long.Parse(TokenString.Substring(Config.TokenLength)));
             else
-                return new DateTime(long.Parse(TokenString.Substring(60)));
+                return new DateTime(long.Parse(TokenString.Substring(59)));
         }
 
         public void Delete(ObjectId userId, int tokenId)

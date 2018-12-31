@@ -98,7 +98,7 @@ namespace SynkNote
                     continue;
                 }
 
-                if (PBKDF2.Validate(inputToken, Tokens[i].TokenString.Substring(0, 60)))
+                if (PBKDF2.Validate(inputToken, Tokens[i].TokenString.Substring(0, 59)))
                 {
                     // Update token
                     return Tokens[i].Update(Id, i);
@@ -113,7 +113,7 @@ namespace SynkNote
             for (int i = 0; i < Tokens.Count; i++)
             {
                 if (Tokens[i].GetExpiry(false) <= DateTime.UtcNow) continue;
-                if (PBKDF2.Validate(inputToken, Tokens[i].TokenString.Substring(0, 60)))
+                if (PBKDF2.Validate(inputToken, Tokens[i].TokenString.Substring(0, 59)))
                 {
                     Tokens[i].Delete(Id, i);
 

@@ -41,10 +41,10 @@ namespace SynkNote.Controllers
 
                 return JsonConvert.SerializeObject(new
                 {
-                    Token = newToken,
-                    note.Location,
-                    note.NotebookId,
-                    note.Content
+                    token = newToken,
+                    location = note.Location,
+                    notebookId = note.NotebookId,
+                    content = note.Content
 
                 });
             } else
@@ -81,8 +81,8 @@ namespace SynkNote.Controllers
             await new Database().NoteCollection.InsertOneAsync(note);
             return JsonConvert.SerializeObject(new
             {
-                Token = newToken,
-                note.Id
+                token = newToken,
+                id = note.Id
             });
         }
 
