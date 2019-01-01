@@ -90,7 +90,7 @@ namespace SynkNote.Controllers
         [HttpGet("{id}/edit")]
         public string Edit(string id, [FromForm]string userId, [FromForm]string token, [FromForm]string content)
         {
-            if (id == null |userId == null || token == null)
+            if (id == null || userId == null || token == null)
                 return ErrorReturner.Make(ReturnCode.InvalidInput);
 
             string noteActionReturn = NoteAction
