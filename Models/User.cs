@@ -10,21 +10,26 @@ using System.Security.Cryptography;
 using System.Threading.Tasks;
 using SynkNote.Algorithms;
 using SynkNote.Enums;
+using Newtonsoft.Json;
 
 namespace SynkNote
 {
     public class User
     {
         [BsonId]
+        [JsonProperty("id")]
         public ObjectId Id { get; set; }
 
         [BsonElement("email")]
+        [JsonProperty("email")]
         public string Email { get; set; }
 
         [BsonElement("passwordHash")]
+        [JsonProperty("passwordHash")]
         public string PasswordHash { get; set; }
 
         [BsonElement("tokens")]
+        [JsonProperty("tokens")]
         public List<Token> Tokens { get; set; }
 
         public User()

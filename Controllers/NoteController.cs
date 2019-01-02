@@ -14,12 +14,16 @@ using SynkNote.Output;
 namespace SynkNote.Controllers
 {
     [Route("api/[controller]")]
+    [ApiController]
     public class NoteController : Controller
     {
         // GET api/<controller>/5
         [HttpGet("{id}")]
-        public async Task<string> Get(string id, [FromForm]string userId, [FromForm]string token)
+        public async Task<string> Get(string id, [FromQuery]string userId, [FromQuery]string token)
         {
+            Console.WriteLine("id null: " + id == null);
+            Console.WriteLine("userId null: " + userId == null);
+            Console.WriteLine("token null: " + token == null);
             if (id == null || userId == null || token == null)
                 return ErrorReturner.Make(ReturnCode.InvalidInput);
 
@@ -86,8 +90,8 @@ namespace SynkNote.Controllers
             });
         }
 
-        // PUT api/<controller>/5/edit
-        [HttpGet("{id}/edit")]
+        // POST api/<controller>/5/edit
+        [HttpPost("{id}/edit")]
         public string Edit(string id, [FromForm]string userId, [FromForm]string token, [FromForm]string content)
         {
             if (id == null || userId == null || token == null)

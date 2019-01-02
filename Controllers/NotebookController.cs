@@ -44,7 +44,7 @@ namespace SynkNote.Controllers
         }
 
         [HttpGet]
-        public async Task<string> GetAll([FromForm]string userId, [FromForm]string token)
+        public async Task<string> GetAll([FromQuery]string userId, [FromQuery]string token)
         {
             if (userId == null || token == null)
                 return ErrorReturner.Make(ReturnCode.InvalidInput);
@@ -56,14 +56,42 @@ namespace SynkNote.Controllers
             if (newToken == null) return ErrorReturner.Make(ReturnCode.InvalidToken);
 
             var filter = Builders<Notebook>.Filter.Eq(a => a.Owner, ObjectId.Parse(userId));
-            var notebooks = await new Database().NotebookCollection.FindAsync(filter);
-            if (notebooks == null) return ErrorReturner.Make(ReturnCode.NotebookNotFound);
+            var notebooks = await new Database().NotebookCollection.FindAsync(filter).Result.ToListAsync();
 
             return JsonConvert.SerializeObject(new
             {
                 token = newToken,
-                notebooks = notebooks
+                notebooks
             });
         }
+
+        [HttpGet("{id}")]
+        public async Task<string> GetAllNotes(string id, [FromQuery]string userId, [FromQuery]string token)
+        {
+            if (userId == null || token == null)
+                return ErrorReturner.Make(ReturnCode.InvalidInput);
+
+            User user = await new User().Get(ObjectId.Parse(userId), token);
+            if (user.Id == null) return ErrorReturner.Make(ReturnCode.UserNotFound);
+
+            string newToken = user.ValidateToken(token); // Validate and update token
+            if (newToken == null) return ErrorReturner.Make(ReturnCode.InvalidToken);
+
+            var filter = Builders<Note>.Filter.Eq(a => a.NotebookId, ObjectId.Parse(id));
+            var notes = await new Database().NoteCollection.FindAsync(filter).Result.ToListAsync();
+            var noteSkeletons = new List<NoteSkeleton>();
+
+            foreach (var note in notes)
+            {
+                noteSkeletons.Add(new NoteSkeleton(note.Id, note.LastEdited, note.Location));
+            }
+
+            return JsonConvert.SerializeObject(new
+            {
+                token = newToken,
+                noteSkeletons
+            });
+        }
+
     }
 }
